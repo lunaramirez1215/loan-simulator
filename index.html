@@ -8,7 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Librería para generar archivos PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
 
     <style>
         :root {
@@ -474,6 +479,7 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 18px;
+            flex-wrap: wrap;
         }
 
         .table-header h3 {
@@ -501,6 +507,53 @@
         .export-btn:disabled {
             opacity: .5;
             cursor: not-allowed;
+        }
+
+        /* PRINT AND PDF BUTTONS */
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 12px 17px;
+            border: none;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            opacity: .9;
+        }
+
+        .action-btn:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        .print-btn {
+            background: var(--pink-light);
+            color: #db2777;
+        }
+
+        .pdf-btn {
+            background: linear-gradient(100deg, var(--pink), var(--purple));
+            color: white;
+        }
+
+        .action-btn i {
+            font-size: 14px;
         }
 
         .table-container {
@@ -637,6 +690,97 @@
                 align-items: flex-start;
                 flex-direction: column;
             }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+
+        /* PRINT STYLES */
+
+        @media print {
+
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+
+            body {
+                background: white !important;
+                color: #222 !important;
+            }
+
+            .sidebar,
+            .topbar,
+            .page-heading,
+            #loanForm,
+            .notification,
+            .profile,
+            .language-selector,
+            .action-buttons,
+            .export-btn,
+            .footer,
+            .error-message {
+                display: none !important;
+            }
+
+            .app,
+            .main {
+                display: block;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .dashboard {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                break-inside: avoid;
+            }
+
+            .summary-card {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .table-section {
+                margin-top: 20px;
+                break-before: auto;
+            }
+
+            .table-container {
+                overflow: visible;
+            }
+
+            table {
+                min-width: 0;
+                width: 100%;
+                font-size: 8px;
+            }
+
+            th, td {
+                padding: 7px 5px;
+                white-space: normal;
+            }
+
+            thead {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .empty-state {
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -699,7 +843,6 @@
 
             <div class="topbar-right">
 
-                <!-- LANGUAGE SELECTOR -->
                 <div class="language-selector">
                     <i class="fa-solid fa-globe"></i>
 
@@ -737,7 +880,6 @@
 
         <section class="dashboard">
 
-            <!-- LOAN FORM -->
             <div class="card">
 
                 <div class="card-title">
@@ -874,7 +1016,6 @@
 
             </div>
 
-            <!-- RESULTS -->
             <div class="results-column">
 
                 <div>
@@ -917,94 +1058,66 @@
                         </div>
 
                         <div class="metric">
-
                             <div class="metric-left">
                                 <div class="metric-icon">
                                     <i class="fa-solid fa-percent"></i>
                                 </div>
-
                                 <span class="metric-name" data-i18n="monthlyRate">
                                     Tasa mensual
                                 </span>
                             </div>
-
-                            <span class="metric-value" id="monthlyRateValue">
-                                0%
-                            </span>
-
+                            <span class="metric-value" id="monthlyRateValue">0%</span>
                         </div>
 
                         <div class="metric">
-
                             <div class="metric-left">
                                 <div class="metric-icon">
                                     <i class="fa-solid fa-money-bill-transfer"></i>
                                 </div>
-
                                 <span class="metric-name" data-i18n="totalInterest">
                                     Total de intereses
                                 </span>
                             </div>
-
-                            <span class="metric-value" id="totalInterest">
-                                $0
-                            </span>
-
+                            <span class="metric-value" id="totalInterest">$0</span>
                         </div>
 
                         <div class="metric">
-
                             <div class="metric-left">
                                 <div class="metric-icon">
                                     <i class="fa-solid fa-coins"></i>
                                 </div>
-
                                 <span class="metric-name" data-i18n="totalToPay">
                                     Total a pagar
                                 </span>
                             </div>
-
-                            <span class="metric-value" id="totalPayment">
-                                $0
-                            </span>
-
+                            <span class="metric-value" id="totalPayment">$0</span>
                         </div>
 
                         <div class="metric">
-
                             <div class="metric-left">
                                 <div class="metric-icon">
                                     <i class="fa-solid fa-calendar-check"></i>
                                 </div>
-
                                 <span class="metric-name" data-i18n="term">
                                     Plazo
                                 </span>
                             </div>
-
-                            <span class="metric-value" id="loanDuration">
-                                0 meses
-                            </span>
-
+                            <span class="metric-value" id="loanDuration">0 meses</span>
                         </div>
 
                         <div class="metric">
-
                             <div class="metric-left">
                                 <div class="metric-icon">
                                     <i class="fa-solid fa-chart-line"></i>
                                 </div>
-
                                 <span class="metric-name" data-i18n="selectedRate">
                                     Tasa seleccionada
                                 </span>
                             </div>
-
                             <span class="rate-badge" id="rateTypeLabel"
                                   data-i18n="notConfigured">
                                 Sin configurar
                             </span>
-
                         </div>
 
                     </div>
@@ -1035,7 +1148,7 @@
                     </p>
                 </div>
 
-                <button class="export-btn" id="exportBtn" disabled>
+                <button class="export-btn" id="exportCSVBtn" disabled>
                     <i class="fa-solid fa-file-csv"></i>
                     <span data-i18n="exportCSV">Exportar CSV</span>
                 </button>
@@ -1062,10 +1175,8 @@
                             <td colspan="5">
                                 <div class="empty-state">
                                     <i class="fa-solid fa-file-invoice"></i>
-
                                     <p data-i18n="emptyTable">
-                                        Aún no hay resultados.<br>
-                                        Completa el formulario y calcula tu préstamo.
+                                        Aún no hay resultados. Completa el formulario y calcula tu préstamo.
                                     </p>
                                 </div>
                             </td>
@@ -1074,6 +1185,31 @@
                     </tbody>
 
                 </table>
+
+            </div>
+
+            <!-- NEW OPERATIONAL BUTTONS -->
+            <div class="action-buttons">
+
+                <button
+                    type="button"
+                    class="action-btn print-btn"
+                    id="printBtn"
+                    disabled
+                >
+                    <i class="fa-solid fa-print"></i>
+                    <span data-i18n="printSimulation">Imprimir simulación</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="action-btn pdf-btn"
+                    id="pdfBtn"
+                    disabled
+                >
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span data-i18n="downloadPDF">Descargar PDF</span>
+                </button>
 
             </div>
 
@@ -1090,55 +1226,43 @@
 <script>
 
     // ==========================================
-    // 1. DICCIONARIO DE TRADUCCIONES
+    // 1. DICCIONARIO BILINGÜE
     // ==========================================
 
     const translations = {
 
         es: {
-
             mainMenu: "MENÚ PRINCIPAL",
             simulator: "Simulador de préstamos",
             financialSummary: "Resumen financiero",
             amortization: "Amortización",
             help: "Ayuda",
-
             planFuture: "Planifica tu futuro",
             sidebarDescription: "Simula tus préstamos y toma decisiones financieras con mayor claridad.",
-
             welcome: "¡Bienvenido!",
             welcomeDescription: "Administra y simula tus préstamos fácilmente.",
             user: "Usuario",
             financialPanel: "Panel financiero",
-
             pageTitle: "Simulador de préstamos",
             pageDescription: "Calcula tus cuotas, intereses y conoce el valor total de tu financiación.",
-
             configureLoan: "Configura tu préstamo",
             configureDescription: "Ingresa los datos para realizar la simulación.",
-
             loanAmount: "Monto total del préstamo",
             amountPlaceholder: "Ej. 50000000",
             amountHint: "Ingresa el valor que deseas solicitar.",
-
             interestRate: "Tasa de interés (%)",
             ratePlaceholder: "Ej. 12",
             interestType: "Tipo de tasa",
-
             annualRate: "Efectiva anual (EA)",
             monthlyRateOption: "Efectiva mensual (EM)",
-
             loanTerm: "Plazo del préstamo (meses)",
             termPlaceholder: "Ej. 60",
             termHint: "Indica el número de cuotas mensuales.",
-
             calculate: "Calcular préstamo",
             clear: "Limpiar formulario",
-
             monthlyInstallment: "CUOTA MENSUAL ESTIMADA",
             completeData: "Completa los datos para comenzar.",
             paymentDescription: "Cuota fija durante {months} meses.",
-
             resultsDescription: "Resultados de tu simulación.",
             monthlyRate: "Tasa mensual",
             totalInterest: "Total de intereses",
@@ -1146,81 +1270,76 @@
             term: "Plazo",
             selectedRate: "Tasa seleccionada",
             notConfigured: "Sin configurar",
-
             amortizationTable: "Tabla de amortización",
             tableDescription: "Consulta el detalle de cada cuota de tu préstamo.",
-
             exportCSV: "Exportar CSV",
             period: "Periodo",
             installment: "Cuota mensual",
             interest: "Interés",
             capitalPayment: "Abono a capital",
             remainingBalance: "Saldo pendiente",
-
             emptyTable: "Aún no hay resultados. Completa el formulario y calcula tu préstamo.",
-
             footerText: "Simulador financiero de préstamos",
-
             errorInvalid: "Verifica los datos ingresados. El monto debe ser mayor que cero, la tasa no puede ser negativa y el plazo debe estar entre 1 y 600 meses.",
             errorCalculation: "No fue posible calcular el préstamo.",
-
             month: "mes",
             months: "meses",
-
             csvPeriod: "Periodo",
             csvInstallment: "Cuota mensual",
             csvInterest: "Interes",
             csvCapital: "Abono a capital",
             csvBalance: "Saldo pendiente",
-
-            csvFilename: "tabla_amortizacion.csv"
-
+            csvFilename: "tabla_amortizacion.csv",
+            printSimulation: "Imprimir simulación",
+            downloadPDF: "Descargar PDF",
+            pdfTitle: "REPORTE DE SIMULACIÓN DE PRÉSTAMO",
+            pdfDate: "Fecha de generación",
+            pdfLoanAmount: "Monto del préstamo",
+            pdfRate: "Tasa de interés",
+            pdfRateType: "Tipo de tasa",
+            pdfTerm: "Plazo",
+            pdfMonthlyRate: "Tasa mensual equivalente",
+            pdfInstallment: "Cuota mensual",
+            pdfTotalInterest: "Total de intereses",
+            pdfTotalPayment: "Total a pagar",
+            pdfSchedule: "TABLA DE AMORTIZACIÓN",
+            pdfFooter: "FinancePro - Simulador financiero de préstamos",
+            pdfError: "No se pudo generar el PDF. Verifica tu conexión e inténtalo nuevamente.",
+            printError: "No se pudo abrir la ventana de impresión. Verifica que tu navegador permita ventanas emergentes."
         },
 
         en: {
-
             mainMenu: "MAIN MENU",
             simulator: "Loan Simulator",
             financialSummary: "Financial Summary",
             amortization: "Amortization",
             help: "Help",
-
             planFuture: "Plan your future",
             sidebarDescription: "Simulate your loans and make clearer financial decisions.",
-
             welcome: "Welcome!",
             welcomeDescription: "Manage and simulate your loans easily.",
             user: "User",
             financialPanel: "Financial Dashboard",
-
             pageTitle: "Loan Simulator",
             pageDescription: "Calculate your installments, interest and total financing cost.",
-
             configureLoan: "Configure your loan",
             configureDescription: "Enter your information to simulate your loan.",
-
             loanAmount: "Total loan amount",
             amountPlaceholder: "E.g. 50000000",
             amountHint: "Enter the amount you wish to borrow.",
-
             interestRate: "Interest rate (%)",
             ratePlaceholder: "E.g. 12",
             interestType: "Interest rate type",
-
             annualRate: "Effective Annual Rate (EAR)",
             monthlyRateOption: "Effective Monthly Rate (EMR)",
-
             loanTerm: "Loan term (months)",
             termPlaceholder: "E.g. 60",
             termHint: "Enter the number of monthly installments.",
-
             calculate: "Calculate loan",
             clear: "Clear form",
-
             monthlyInstallment: "ESTIMATED MONTHLY PAYMENT",
             completeData: "Complete the information to get started.",
             paymentDescription: "Fixed installment for {months} months.",
-
             resultsDescription: "Your simulation results.",
             monthlyRate: "Monthly interest rate",
             totalInterest: "Total interest",
@@ -1228,48 +1347,121 @@
             term: "Loan term",
             selectedRate: "Selected rate",
             notConfigured: "Not configured",
-
             amortizationTable: "Amortization schedule",
             tableDescription: "View the details of each loan installment.",
-
             exportCSV: "Export CSV",
             period: "Period",
             installment: "Monthly installment",
             interest: "Interest",
             capitalPayment: "Principal payment",
             remainingBalance: "Remaining balance",
-
             emptyTable: "No results yet. Complete the form and calculate your loan.",
-
             footerText: "Loan Financial Simulator",
-
             errorInvalid: "Please check your entries. The loan amount must be greater than zero, the interest rate cannot be negative, and the term must be between 1 and 600 months.",
             errorCalculation: "Unable to calculate the loan.",
-
             month: "month",
             months: "months",
-
             csvPeriod: "Period",
             csvInstallment: "Monthly installment",
             csvInterest: "Interest",
             csvCapital: "Principal payment",
             csvBalance: "Remaining balance",
-
-            csvFilename: "amortization_schedule.csv"
-
+            csvFilename: "amortization_schedule.csv",
+            printSimulation: "Print simulation",
+            downloadPDF: "Download PDF",
+            pdfTitle: "LOAN SIMULATION REPORT",
+            pdfDate: "Generation date",
+            pdfLoanAmount: "Loan amount",
+            pdfRate: "Interest rate",
+            pdfRateType: "Interest rate type",
+            pdfTerm: "Loan term",
+            pdfMonthlyRate: "Equivalent monthly rate",
+            pdfInstallment: "Monthly installment",
+            pdfTotalInterest: "Total interest",
+            pdfTotalPayment: "Total amount payable",
+            pdfSchedule: "AMORTIZATION SCHEDULE",
+            pdfFooter: "FinancePro - Loan Financial Simulator",
+            pdfError: "Unable to generate the PDF. Check your connection and try again.",
+            printError: "Unable to open the print window. Check your browser's pop-up settings."
         }
 
     };
 
 
     // ==========================================
-    // 2. CONFIGURACIÓN DEL IDIOMA
+    // 2. VARIABLES
     // ==========================================
 
     let currentLanguage = "es";
+    let currentAmortization = [];
+    let lastLoanTerm = 0;
+    let lastInterestType = "";
+    let lastPrincipal = 0;
+    let lastInterestRate = 0;
+    let lastMonthlyRate = 0;
+    let lastMonthlyPayment = 0;
+    let lastTotalInterest = 0;
+    let lastTotalPayment = 0;
 
-    const languageSelector =
-        document.getElementById("languageSelector");
+    const loanForm = document.getElementById("loanForm");
+    const amortizationBody = document.getElementById("amortizationBody");
+    const errorMessage = document.getElementById("errorMessage");
+
+    const exportCSVBtn = document.getElementById("exportCSVBtn");
+    const printBtn = document.getElementById("printBtn");
+    const pdfBtn = document.getElementById("pdfBtn");
+
+    const languageSelector = document.getElementById("languageSelector");
+
+    function t(key) {
+        return translations[currentLanguage][key];
+    }
+
+
+    // ==========================================
+    // 3. FORMATOS
+    // ==========================================
+
+    function formatCurrency(value) {
+
+        const locale = currentLanguage === "es" ? "es-CO" : "en-US";
+
+        return new Intl.NumberFormat(locale, {
+            style: "currency",
+            currency: "COP",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(value);
+
+    }
+
+    function formatPercentage(value) {
+
+        const locale = currentLanguage === "es" ? "es-CO" : "en-US";
+
+        return new Intl.NumberFormat(locale, {
+            minimumFractionDigits: 4,
+            maximumFractionDigits: 4
+        }).format(value) + " %";
+
+    }
+
+    function formatDate() {
+
+        return new Intl.DateTimeFormat(
+            currentLanguage === "es" ? "es-CO" : "en-US",
+            {
+                dateStyle: "long",
+                timeStyle: "short"
+            }
+        ).format(new Date());
+
+    }
+
+
+    // ==========================================
+    // 4. TRADUCCIÓN DINÁMICA
+    // ==========================================
 
     function translatePage(language) {
 
@@ -1277,227 +1469,104 @@
 
         const dictionary = translations[language];
 
-        // Actualizar atributo lang del documento
         document.documentElement.lang = language;
 
-        // Traducir todos los elementos con data-i18n
         document.querySelectorAll("[data-i18n]").forEach(element => {
 
-            const key = element.getAttribute("data-i18n");
+            const key = element.dataset.i18n;
 
             if (dictionary[key] !== undefined) {
-
                 element.textContent = dictionary[key];
-
             }
 
         });
 
-        // Traducir placeholders
         document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
 
-            const key = element.getAttribute("data-i18n-placeholder");
+            const key = element.dataset.i18nPlaceholder;
 
             if (dictionary[key] !== undefined) {
-
                 element.placeholder = dictionary[key];
-
             }
 
         });
 
-        // Actualizar descripción de cuota
-        updatePaymentDescription();
+        updateResultsLanguage();
 
-        // Actualizar duración del préstamo
-        updateLoanDuration();
-
-        // Actualizar tasa seleccionada
-        updateRateLabel();
-
-        // Actualizar tabla vacía si no hay resultados
-        if (currentAmortization.length === 0) {
-
-            renderEmptyTable();
-
-        } else {
-
-            renderAmortizationTable();
-
+        if (errorMessage.style.display === "block") {
+            errorMessage.textContent = dictionary.errorInvalid;
         }
 
-        // Actualizar errores si existen
-        if (errorMessage.style.display === "block") {
-
-            errorMessage.textContent = dictionary.errorInvalid;
-
+        if (currentAmortization.length > 0) {
+            renderAmortizationTable();
+        } else {
+            renderEmptyTable();
         }
 
     }
 
-
-    // ==========================================
-    // 3. CAMBIO DINÁMICO DE IDIOMA
-    // ==========================================
-
     languageSelector.addEventListener("change", function() {
-
         translatePage(this.value);
-
     });
 
 
     // ==========================================
-    // 4. VARIABLES DEL SIMULADOR
+    // 5. ACTUALIZAR RESULTADOS AL CAMBIAR IDIOMA
     // ==========================================
 
-    const loanForm = document.getElementById("loanForm");
+    function updateResultsLanguage() {
 
-    const amortizationBody =
-        document.getElementById("amortizationBody");
+        document.getElementById("monthlyPayment").textContent =
+            formatCurrency(lastMonthlyPayment);
 
-    const exportBtn = document.getElementById("exportBtn");
+        document.getElementById("monthlyRateValue").textContent =
+            formatPercentage(lastMonthlyRate * 100);
 
-    const errorMessage = document.getElementById("errorMessage");
+        document.getElementById("totalInterest").textContent =
+            formatCurrency(lastTotalInterest);
 
-    let currentAmortization = [];
-
-    let lastLoanTerm = 0;
-
-    let lastInterestType = "";
-
-    let lastMonthlyRate = 0;
-
-
-    // ==========================================
-    // 5. FORMATO DE MONEDA
-    // ==========================================
-
-    function formatCurrency(value) {
-
-        const locale = currentLanguage === "es"
-            ? "es-CO"
-            : "en-US";
-
-        return new Intl.NumberFormat(locale, {
-
-            style: "currency",
-            currency: "COP",
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-
-        }).format(value);
-
-    }
-
-
-    // ==========================================
-    // 6. FORMATO DE PORCENTAJE
-    // ==========================================
-
-    function formatPercentage(value) {
-
-        const locale = currentLanguage === "es"
-            ? "es-CO"
-            : "en-US";
-
-        return new Intl.NumberFormat(locale, {
-
-            minimumFractionDigits: 4,
-            maximumFractionDigits: 4
-
-        }).format(value) + " %";
-
-    }
-
-
-    // ==========================================
-    // 7. ACTUALIZAR DESCRIPCIÓN DE CUOTA
-    // ==========================================
-
-    function updatePaymentDescription() {
-
-        const dictionary = translations[currentLanguage];
-
-        const description = lastLoanTerm > 0
-            ? dictionary.paymentDescription.replace(
-                "{months}",
-                lastLoanTerm
-            )
-            : dictionary.completeData;
+        document.getElementById("totalPayment").textContent =
+            formatCurrency(lastTotalPayment);
 
         document.getElementById("paymentDescription").textContent =
-            description;
-
-    }
-
-
-    // ==========================================
-    // 8. ACTUALIZAR DURACIÓN
-    // ==========================================
-
-    function updateLoanDuration() {
-
-        const dictionary = translations[currentLanguage];
-
-        const duration = lastLoanTerm === 1
-            ? dictionary.month
-            : dictionary.months;
+            lastLoanTerm > 0
+                ? t("paymentDescription").replace("{months}", lastLoanTerm)
+                : t("completeData");
 
         document.getElementById("loanDuration").textContent =
-            lastLoanTerm + " " + duration;
+            lastLoanTerm + " " +
+            (lastLoanTerm === 1 ? t("month") : t("months"));
 
-    }
-
-
-    // ==========================================
-    // 9. ACTUALIZAR TIPO DE TASA
-    // ==========================================
-
-    function updateRateLabel() {
-
-        const dictionary = translations[currentLanguage];
-
-        let label = dictionary.notConfigured;
+        let rateLabel = t("notConfigured");
 
         if (lastInterestType === "effectiveAnnual") {
-
-            label = dictionary.annualRate;
-
+            rateLabel = t("annualRate");
         } else if (lastInterestType === "monthly") {
-
-            label = dictionary.monthlyRateOption;
-
+            rateLabel = t("monthlyRateOption");
         }
 
-        document.getElementById("rateTypeLabel").textContent = label;
+        document.getElementById("rateTypeLabel").textContent = rateLabel;
 
     }
 
 
     // ==========================================
-    // 10. MOSTRAR ERRORES
+    // 6. VALIDACIONES
     // ==========================================
 
     function showError(message) {
-
         errorMessage.textContent = message;
-
         errorMessage.style.display = "block";
-
     }
 
     function hideError() {
-
         errorMessage.textContent = "";
-
         errorMessage.style.display = "none";
-
     }
 
 
     // ==========================================
-    // 11. CALCULAR PRÉSTAMO
+    // 7. CALCULAR PRÉSTAMO
     // ==========================================
 
     loanForm.addEventListener("submit", function(event) {
@@ -1521,9 +1590,6 @@
             document.getElementById("loanTerm").value
         );
 
-        const dictionary = translations[currentLanguage];
-
-        // Validaciones
         if (
             !Number.isFinite(principal) ||
             !Number.isFinite(interestRate) ||
@@ -1533,22 +1599,16 @@
             loanTerm <= 0 ||
             loanTerm > 600
         ) {
-
-            showError(dictionary.errorInvalid);
-
+            showError(t("errorInvalid"));
             return;
-
         }
 
-        // Conversión a tasa efectiva mensual
         let monthlyInterestRate;
 
         if (interestType === "effectiveAnnual") {
 
-            const annualRate = interestRate / 100;
-
             monthlyInterestRate =
-                Math.pow(1 + annualRate, 1 / 12) - 1;
+                Math.pow(1 + interestRate / 100, 1 / 12) - 1;
 
         } else {
 
@@ -1556,7 +1616,6 @@
 
         }
 
-        // Calcular cuota mensual
         let monthlyPayment;
 
         if (monthlyInterestRate === 0) {
@@ -1566,38 +1625,26 @@
         } else {
 
             monthlyPayment =
-                principal *
-                monthlyInterestRate /
-                (
-                    1 -
-                    Math.pow(
-                        1 + monthlyInterestRate,
-                        -loanTerm
-                    )
-                );
+                principal * monthlyInterestRate /
+                (1 - Math.pow(1 + monthlyInterestRate, -loanTerm));
 
         }
 
         if (!Number.isFinite(monthlyPayment)) {
-
-            showError(dictionary.errorCalculation);
-
+            showError(t("errorCalculation"));
             return;
-
         }
 
-        // Guardar configuración para traducciones posteriores
-        lastLoanTerm = loanTerm;
-
+        // Guardar datos de la simulación
+        lastPrincipal = principal;
+        lastInterestRate = interestRate;
         lastInterestType = interestType;
-
+        lastLoanTerm = loanTerm;
         lastMonthlyRate = monthlyInterestRate;
+        lastMonthlyPayment = monthlyPayment;
 
-        // Generar amortización
         let remainingBalance = principal;
-
         let totalInterest = 0;
-
         let totalPayment = 0;
 
         currentAmortization = [];
@@ -1610,69 +1657,48 @@
             let capitalPayment =
                 monthlyPayment - interestPayment;
 
-            // Ajustar última cuota
             if (period === loanTerm) {
-
                 capitalPayment = remainingBalance;
-
             }
 
-            const actualPayment =
-                capitalPayment + interestPayment;
+            const actualPayment = capitalPayment + interestPayment;
 
             remainingBalance -= capitalPayment;
 
             if (Math.abs(remainingBalance) < 0.000001) {
-
                 remainingBalance = 0;
-
             }
 
             totalInterest += interestPayment;
-
             totalPayment += actualPayment;
 
             currentAmortization.push({
-
                 period,
                 payment: actualPayment,
                 interest: interestPayment,
                 capital: capitalPayment,
                 balance: remainingBalance
-
             });
 
         }
 
-        // Mostrar resultados
-        document.getElementById("monthlyPayment").textContent =
-            formatCurrency(monthlyPayment);
+        lastTotalInterest = totalInterest;
+        lastTotalPayment = totalPayment;
 
-        document.getElementById("monthlyRateValue").textContent =
-            formatPercentage(monthlyInterestRate * 100);
+        updateResultsLanguage();
 
-        document.getElementById("totalInterest").textContent =
-            formatCurrency(totalInterest);
-
-        document.getElementById("totalPayment").textContent =
-            formatCurrency(totalPayment);
-
-        updatePaymentDescription();
-
-        updateLoanDuration();
-
-        updateRateLabel();
-
-        // Renderizar tabla
         renderAmortizationTable();
 
-        exportBtn.disabled = false;
+        // Activar botones de impresión y exportación
+        exportCSVBtn.disabled = false;
+        printBtn.disabled = false;
+        pdfBtn.disabled = false;
 
     });
 
 
     // ==========================================
-    // 12. GENERAR TABLA DE AMORTIZACIÓN
+    // 8. TABLA DE AMORTIZACIÓN
     // ==========================================
 
     function renderAmortizationTable() {
@@ -1684,17 +1710,11 @@
             const row = document.createElement("tr");
 
             const values = [
-
                 item.period,
-
                 formatCurrency(item.payment),
-
                 formatCurrency(item.interest),
-
                 formatCurrency(item.capital),
-
                 formatCurrency(item.balance)
-
             ];
 
             values.forEach((value, index) => {
@@ -1704,11 +1724,8 @@
                 cell.textContent = value;
 
                 if (index === 0) {
-
                     cell.style.fontWeight = "700";
-
                     cell.style.color = "var(--purple)";
-
                 }
 
                 row.appendChild(cell);
@@ -1721,41 +1738,24 @@
 
     }
 
-
-    // ==========================================
-    // 13. TABLA VACÍA
-    // ==========================================
-
     function renderEmptyTable() {
-
-        const dictionary = translations[currentLanguage];
 
         amortizationBody.innerHTML = "";
 
         const row = document.createElement("tr");
-
         const cell = document.createElement("td");
-
-        cell.colSpan = 5;
-
         const container = document.createElement("div");
-
-        container.className = "empty-state";
-
         const icon = document.createElement("i");
-
-        icon.className = "fa-solid fa-file-invoice";
-
         const paragraph = document.createElement("p");
 
-        paragraph.textContent = dictionary.emptyTable;
+        cell.colSpan = 5;
+        container.className = "empty-state";
+        icon.className = "fa-solid fa-file-invoice";
+        paragraph.textContent = t("emptyTable");
 
         container.appendChild(icon);
-
         container.appendChild(paragraph);
-
         cell.appendChild(container);
-
         row.appendChild(cell);
 
         amortizationBody.appendChild(row);
@@ -1764,63 +1764,44 @@
 
 
     // ==========================================
-    // 14. EXPORTAR CSV BILINGÜE
+    // 9. EXPORTAR CSV
     // ==========================================
 
-    exportBtn.addEventListener("click", function() {
+    exportCSVBtn.addEventListener("click", function() {
 
-        if (currentAmortization.length === 0) {
-
-            return;
-
-        }
-
-        const dictionary = translations[currentLanguage];
+        if (currentAmortization.length === 0) return;
 
         const rows = [
 
             [
-
-                dictionary.csvPeriod,
-
-                dictionary.csvInstallment,
-
-                dictionary.csvInterest,
-
-                dictionary.csvCapital,
-
-                dictionary.csvBalance
-
+                t("period"),
+                t("installment"),
+                t("interest"),
+                t("capitalPayment"),
+                t("remainingBalance")
             ],
 
             ...currentAmortization.map(item => [
-
                 item.period,
-
                 item.payment.toFixed(2),
-
                 item.interest.toFixed(2),
-
                 item.capital.toFixed(2),
-
                 item.balance.toFixed(2)
-
             ])
 
         ];
 
         const csvContent = rows.map(row =>
 
-            row.join(";")
+            row.map(value =>
+                `"${String(value).replace(/"/g, '""')}"`
+            ).join(";")
 
         ).join("\n");
 
         const blob = new Blob(
-
             ["\uFEFF" + csvContent],
-
             { type: "text/csv;charset=utf-8;" }
-
         );
 
         const url = URL.createObjectURL(blob);
@@ -1828,13 +1809,10 @@
         const link = document.createElement("a");
 
         link.href = url;
-
-        link.download = dictionary.csvFilename;
+        link.download = t("csvFilename");
 
         document.body.appendChild(link);
-
         link.click();
-
         document.body.removeChild(link);
 
         URL.revokeObjectURL(url);
@@ -1843,7 +1821,283 @@
 
 
     // ==========================================
-    // 15. REINICIAR SIMULADOR
+    // 10. IMPRIMIR SIMULACIÓN
+    // ==========================================
+
+    printBtn.addEventListener("click", function() {
+
+        if (currentAmortization.length === 0) return;
+
+        // Imprime la interfaz completa usando los estilos @media print.
+        try {
+
+            window.print();
+
+        } catch (error) {
+
+            alert(t("printError"));
+
+        }
+
+    });
+
+
+    // ==========================================
+    // 11. EXPORTAR SIMULACIÓN A PDF
+    // ==========================================
+
+    pdfBtn.addEventListener("click", function() {
+
+        if (currentAmortization.length === 0) return;
+
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+
+            alert(t("pdfError"));
+            return;
+
+        }
+
+        try {
+
+            const { jsPDF } = window.jspdf;
+
+            const doc = new jsPDF({
+                orientation: "landscape",
+                unit: "mm",
+                format: "a4"
+            });
+
+            const isSpanish = currentLanguage === "es";
+
+            // Encabezado
+            doc.setFillColor(124, 58, 237);
+            doc.rect(0, 0, 297, 35, "F");
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+
+            doc.text(t("pdfTitle"), 15, 17);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+
+            doc.text(
+                t("pdfDate") + ": " + formatDate(),
+                15,
+                26
+            );
+
+            // Resumen financiero
+            doc.setTextColor(40, 30, 60);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+
+            doc.text(t("financialSummary"), 15, 47);
+
+            const rateType = lastInterestType === "effectiveAnnual"
+                ? t("annualRate")
+                : t("monthlyRateOption");
+
+            const summaryData = [
+
+                [
+                    t("pdfLoanAmount"),
+                    formatCurrency(lastPrincipal)
+                ],
+
+                [
+                    t("pdfRate"),
+                    lastInterestRate + "%"
+                ],
+
+                [
+                    t("pdfRateType"),
+                    rateType
+                ],
+
+                [
+                    t("pdfTerm"),
+                    lastLoanTerm + " " +
+                    (lastLoanTerm === 1 ? t("month") : t("months"))
+                ],
+
+                [
+                    t("pdfMonthlyRate"),
+                    formatPercentage(lastMonthlyRate * 100)
+                ],
+
+                [
+                    t("pdfInstallment"),
+                    formatCurrency(lastMonthlyPayment)
+                ],
+
+                [
+                    t("pdfTotalInterest"),
+                    formatCurrency(lastTotalInterest)
+                ],
+
+                [
+                    t("pdfTotalPayment"),
+                    formatCurrency(lastTotalPayment)
+                ]
+
+            ];
+
+            doc.autoTable({
+
+                startY: 53,
+
+                head: [[
+                    isSpanish ? "Concepto" : "Description",
+                    isSpanish ? "Valor" : "Value"
+                ]],
+
+                body: summaryData,
+
+                theme: "grid",
+
+                styles: {
+                    font: "helvetica",
+                    fontSize: 9,
+                    cellPadding: 3
+                },
+
+                headStyles: {
+                    fillColor: [124, 58, 237],
+                    textColor: 255,
+                    fontStyle: "bold"
+                },
+
+                alternateRowStyles: {
+                    fillColor: [250, 247, 255]
+                },
+
+                columnStyles: {
+                    0: { cellWidth: 90 },
+                    1: { cellWidth: 110 }
+                },
+
+                margin: {
+                    left: 15,
+                    right: 15
+                }
+
+            });
+
+            // Tabla de amortización
+            const scheduleStartY = doc.lastAutoTable.finalY + 12;
+
+            doc.setTextColor(40, 30, 60);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+
+            doc.text(
+                t("pdfSchedule"),
+                15,
+                scheduleStartY
+            );
+
+            const tableData = currentAmortization.map(item => [
+
+                String(item.period),
+
+                formatCurrency(item.payment),
+
+                formatCurrency(item.interest),
+
+                formatCurrency(item.capital),
+
+                formatCurrency(item.balance)
+
+            ]);
+
+            doc.autoTable({
+
+                startY: scheduleStartY + 6,
+
+                head: [[
+                    t("period"),
+                    t("installment"),
+                    t("interest"),
+                    t("capitalPayment"),
+                    t("remainingBalance")
+                ]],
+
+                body: tableData,
+
+                theme: "grid",
+
+                styles: {
+                    font: "helvetica",
+                    fontSize: 7,
+                    cellPadding: 2.5,
+                    overflow: "linebreak"
+                },
+
+                headStyles: {
+                    fillColor: [124, 58, 237],
+                    textColor: 255,
+                    fontStyle: "bold"
+                },
+
+                alternateRowStyles: {
+                    fillColor: [250, 247, 255]
+                },
+
+                margin: {
+                    left: 15,
+                    right: 15,
+                    bottom: 18
+                },
+
+                didDrawPage: function(data) {
+
+                    const pageHeight =
+                        doc.internal.pageSize.getHeight();
+
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(8);
+                    doc.setTextColor(130, 120, 145);
+
+                    doc.text(
+                        t("pdfFooter"),
+                        15,
+                        pageHeight - 8
+                    );
+
+                    doc.text(
+                        (isSpanish ? "Página " : "Page ") +
+                        doc.internal.getNumberOfPages(),
+                        280,
+                        pageHeight - 8,
+                        { align: "right" }
+                    );
+
+                }
+
+            });
+
+            // Nombre del archivo
+            const filename = isSpanish
+                ? "simulacion_prestamo_FinancePro.pdf"
+                : "loan_simulation_FinancePro.pdf";
+
+            doc.save(filename);
+
+        } catch (error) {
+
+            console.error("PDF generation error:", error);
+
+            alert(t("pdfError"));
+
+        }
+
+    });
+
+
+    // ==========================================
+    // 12. REINICIAR SIMULADOR
     // ==========================================
 
     loanForm.addEventListener("reset", function() {
@@ -1853,47 +2107,29 @@
         currentAmortization = [];
 
         lastLoanTerm = 0;
-
         lastInterestType = "";
-
+        lastPrincipal = 0;
+        lastInterestRate = 0;
         lastMonthlyRate = 0;
+        lastMonthlyPayment = 0;
+        lastTotalInterest = 0;
+        lastTotalPayment = 0;
 
-        document.getElementById("monthlyPayment").textContent =
-            formatCurrency(0);
-
-        document.getElementById("monthlyRateValue").textContent =
-            "0%";
-
-        document.getElementById("totalInterest").textContent =
-            formatCurrency(0);
-
-        document.getElementById("totalPayment").textContent =
-            formatCurrency(0);
-
-        updatePaymentDescription();
-
-        updateLoanDuration();
-
-        updateRateLabel();
+        updateResultsLanguage();
 
         renderEmptyTable();
 
-        exportBtn.disabled = true;
+        exportCSVBtn.disabled = true;
+        printBtn.disabled = true;
+        pdfBtn.disabled = true;
 
     });
 
 
     // ==========================================
-    // 16. INICIALIZACIÓN
+    // 13. INICIALIZACIÓN
     // ==========================================
 
-    // Detectar idioma del navegador si es inglés.
-    const browserLanguage =
-        navigator.language.toLowerCase().startsWith("en")
-            ? "en"
-            : "es";
-
-    // Español como idioma inicial por defecto.
     languageSelector.value = "es";
 
     translatePage("es");
