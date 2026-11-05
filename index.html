@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Préstamos | FinancePro</title>
+    <title>FinancePro | Loan Simulator</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,14 +15,12 @@
             --pink: #ec4899;
             --pink-light: #fce7f3;
             --purple: #7c3aed;
-            --purple-dark: #5b21b6;
             --purple-light: #f3e8ff;
             --background: #faf8ff;
             --white: #ffffff;
             --text: #29213d;
             --muted: #8b849b;
             --border: #eee8f5;
-            --green: #16a36a;
             --shadow: 0 10px 35px rgba(91, 33, 182, 0.07);
         }
 
@@ -47,8 +45,6 @@
             display: flex;
             min-height: 100vh;
         }
-
-        /* SIDEBAR */
 
         .sidebar {
             width: 245px;
@@ -79,7 +75,6 @@
             border-radius: 13px;
             display: grid;
             place-items: center;
-            font-size: 19px;
         }
 
         .menu-label {
@@ -100,23 +95,15 @@
             color: var(--muted);
             font-size: 13px;
             font-weight: 600;
-            cursor: pointer;
-            transition: .2s;
         }
 
         .menu-item i {
             width: 19px;
-            font-size: 16px;
         }
 
         .menu-item.active {
             background: var(--purple-light);
             color: var(--purple);
-        }
-
-        .menu-item:hover {
-            background: var(--pink-light);
-            color: var(--pink);
         }
 
         .sidebar-bottom {
@@ -142,8 +129,6 @@
             line-height: 1.6;
             color: #81768e;
         }
-
-        /* MAIN CONTENT */
 
         .main {
             flex: 1;
@@ -176,6 +161,31 @@
             gap: 15px;
         }
 
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 10px;
+        }
+
+        .language-selector i {
+            color: var(--purple);
+            font-size: 13px;
+        }
+
+        .language-selector select {
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
         .notification {
             width: 42px;
             height: 42px;
@@ -185,18 +195,6 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             color: var(--purple);
-            position: relative;
-        }
-
-        .notification::after {
-            content: "";
-            position: absolute;
-            width: 7px;
-            height: 7px;
-            background: var(--pink);
-            border-radius: 50%;
-            top: 9px;
-            right: 9px;
         }
 
         .profile {
@@ -225,8 +223,6 @@
             font-size: 10px;
         }
 
-        /* HEADER */
-
         .page-heading {
             margin-bottom: 25px;
         }
@@ -241,8 +237,6 @@
             color: var(--muted);
             font-size: 13px;
         }
-
-        /* LAYOUT */
 
         .dashboard {
             display: grid;
@@ -287,8 +281,6 @@
             margin-top: 4px;
         }
 
-        /* FORM */
-
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -321,9 +313,10 @@
             transform: translateY(-50%);
             color: var(--purple);
             font-size: 14px;
+            pointer-events: none;
         }
 
-        input, select {
+        input, .input-wrapper select {
             width: 100%;
             height: 47px;
             border: 1px solid var(--border);
@@ -336,13 +329,9 @@
             transition: .2s;
         }
 
-        input:focus, select:focus {
+        input:focus, .input-wrapper select:focus {
             border-color: var(--purple);
             box-shadow: 0 0 0 3px rgba(124, 58, 237, .09);
-        }
-
-        input::placeholder {
-            color: #b7afc2;
         }
 
         .input-hint {
@@ -361,17 +350,11 @@
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
-            transition: .2s;
             margin-top: 5px;
         }
 
         .calculate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(124, 58, 237, .22);
-        }
-
-        .calculate-btn i {
-            margin-right: 8px;
+            opacity: .9;
         }
 
         .reset-btn {
@@ -392,8 +375,6 @@
             border-color: var(--purple);
         }
 
-        /* SUMMARY */
-
         .summary-card {
             background: linear-gradient(140deg, #7c3aed, #a855f7 60%, #ec4899);
             color: white;
@@ -402,17 +383,6 @@
             position: relative;
             overflow: hidden;
             margin-bottom: 18px;
-        }
-
-        .summary-card::after {
-            content: "";
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            border: 1px solid rgba(255,255,255,.15);
-            border-radius: 50%;
-            right: -60px;
-            top: -70px;
         }
 
         .summary-card .label {
@@ -494,8 +464,6 @@
             font-weight: 700;
         }
 
-        /* TABLE */
-
         .table-section {
             margin-top: 25px;
         }
@@ -530,9 +498,9 @@
             white-space: nowrap;
         }
 
-        .export-btn:hover {
-            background: var(--purple);
-            color: white;
+        .export-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
         }
 
         .table-container {
@@ -569,11 +537,6 @@
 
         tbody tr:hover {
             background: #fdfaff;
-        }
-
-        tbody tr:last-child {
-            font-weight: 700;
-            background: #faf6ff;
         }
 
         .empty-state {
@@ -682,7 +645,6 @@
 
 <div class="app">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
 
         <div class="logo">
@@ -692,48 +654,60 @@
             FinancePro
         </div>
 
-        <p class="menu-label">MENÚ PRINCIPAL</p>
+        <p class="menu-label" data-i18n="mainMenu">MENÚ PRINCIPAL</p>
 
         <div class="menu-item active">
             <i class="fa-solid fa-calculator"></i>
-            Simulador de préstamos
+            <span data-i18n="simulator">Simulador de préstamos</span>
         </div>
 
         <div class="menu-item">
             <i class="fa-solid fa-chart-pie"></i>
-            Resumen financiero
+            <span data-i18n="financialSummary">Resumen financiero</span>
         </div>
 
         <div class="menu-item">
             <i class="fa-solid fa-file-invoice-dollar"></i>
-            Amortización
+            <span data-i18n="amortization">Amortización</span>
         </div>
 
         <div class="menu-item">
             <i class="fa-solid fa-circle-question"></i>
-            Ayuda
+            <span data-i18n="help">Ayuda</span>
         </div>
 
         <div class="sidebar-bottom">
             <i class="fa-solid fa-lightbulb"></i>
-            <h4>Planifica tu futuro</h4>
-            <p>Simula tus préstamos y toma decisiones financieras con mayor claridad.</p>
+            <h4 data-i18n="planFuture">Planifica tu futuro</h4>
+            <p data-i18n="sidebarDescription">
+                Simula tus préstamos y toma decisiones financieras con mayor claridad.
+            </p>
         </div>
 
     </aside>
 
-    <!-- MAIN -->
     <main class="main">
 
-        <!-- TOPBAR -->
         <header class="topbar">
 
             <div class="welcome">
-                <h1>¡Bienvenido!</h1>
-                <p>Administra y simula tus préstamos fácilmente.</p>
+                <h1 data-i18n="welcome">¡Bienvenido!</h1>
+                <p data-i18n="welcomeDescription">
+                    Administra y simula tus préstamos fácilmente.
+                </p>
             </div>
 
             <div class="topbar-right">
+
+                <!-- LANGUAGE SELECTOR -->
+                <div class="language-selector">
+                    <i class="fa-solid fa-globe"></i>
+
+                    <select id="languageSelector" aria-label="Select language">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
 
                 <div class="notification">
                     <i class="fa-regular fa-bell"></i>
@@ -745,8 +719,8 @@
                     </div>
 
                     <div class="profile-info">
-                        <strong>Usuario</strong>
-                        <span>Panel financiero</span>
+                        <strong data-i18n="user">Usuario</strong>
+                        <span data-i18n="financialPanel">Panel financiero</span>
                     </div>
                 </div>
 
@@ -755,14 +729,15 @@
         </header>
 
         <div class="page-heading">
-            <h2>Simulador de préstamos</h2>
-            <p>Calcula tus cuotas, intereses y conoce el valor total de tu financiación.</p>
+            <h2 data-i18n="pageTitle">Simulador de préstamos</h2>
+            <p data-i18n="pageDescription">
+                Calcula tus cuotas, intereses y conoce el valor total de tu financiación.
+            </p>
         </div>
 
-        <!-- DASHBOARD -->
         <section class="dashboard">
 
-            <!-- FORM CARD -->
+            <!-- LOAN FORM -->
             <div class="card">
 
                 <div class="card-title">
@@ -772,13 +747,15 @@
                     </div>
 
                     <div>
-                        <h3>Configura tu préstamo</h3>
-                        <p>Ingresa los datos para realizar la simulación.</p>
+                        <h3 data-i18n="configureLoan">Configura tu préstamo</h3>
+                        <p data-i18n="configureDescription">
+                            Ingresa los datos para realizar la simulación.
+                        </p>
                     </div>
 
                 </div>
 
-                <div id="errorMessage" class="error-message"></div>
+                <div id="errorMessage" class="error-message" role="alert"></div>
 
                 <form id="loanForm">
 
@@ -786,7 +763,7 @@
 
                         <div class="form-group full">
 
-                            <label for="loanAmount">
+                            <label for="loanAmount" data-i18n="loanAmount">
                                 Monto total del préstamo
                             </label>
 
@@ -797,13 +774,14 @@
                                     type="number"
                                     id="loanAmount"
                                     placeholder="Ej. 50000000"
+                                    data-i18n-placeholder="amountPlaceholder"
                                     min="0.01"
                                     step="0.01"
                                     required
                                 >
                             </div>
 
-                            <p class="input-hint">
+                            <p class="input-hint" data-i18n="amountHint">
                                 Ingresa el valor que deseas solicitar.
                             </p>
 
@@ -811,7 +789,7 @@
 
                         <div class="form-group">
 
-                            <label for="interestRate">
+                            <label for="interestRate" data-i18n="interestRate">
                                 Tasa de interés (%)
                             </label>
 
@@ -822,6 +800,7 @@
                                     type="number"
                                     id="interestRate"
                                     placeholder="Ej. 12"
+                                    data-i18n-placeholder="ratePlaceholder"
                                     min="0"
                                     step="0.0001"
                                     required
@@ -832,7 +811,7 @@
 
                         <div class="form-group">
 
-                            <label for="interestType">
+                            <label for="interestType" data-i18n="interestType">
                                 Tipo de tasa
                             </label>
 
@@ -840,11 +819,11 @@
                                 <i class="fa-solid fa-chart-line"></i>
 
                                 <select id="interestType" required>
-                                    <option value="effectiveAnnual">
+                                    <option value="effectiveAnnual" data-i18n="annualRate">
                                         Efectiva anual (EA)
                                     </option>
 
-                                    <option value="monthly">
+                                    <option value="monthly" data-i18n="monthlyRateOption">
                                         Efectiva mensual (EM)
                                     </option>
                                 </select>
@@ -854,7 +833,7 @@
 
                         <div class="form-group full">
 
-                            <label for="loanTerm">
+                            <label for="loanTerm" data-i18n="loanTerm">
                                 Plazo del préstamo (meses)
                             </label>
 
@@ -865,6 +844,7 @@
                                     type="number"
                                     id="loanTerm"
                                     placeholder="Ej. 60"
+                                    data-i18n-placeholder="termPlaceholder"
                                     min="1"
                                     max="600"
                                     step="1"
@@ -872,7 +852,7 @@
                                 >
                             </div>
 
-                            <p class="input-hint">
+                            <p class="input-hint" data-i18n="termHint">
                                 Indica el número de cuotas mensuales.
                             </p>
 
@@ -882,32 +862,33 @@
 
                     <button type="submit" class="calculate-btn">
                         <i class="fa-solid fa-calculator"></i>
-                        Calcular préstamo
+                        <span data-i18n="calculate">Calcular préstamo</span>
                     </button>
 
                     <button type="reset" class="reset-btn">
                         <i class="fa-solid fa-rotate-left"></i>
-                        Limpiar formulario
+                        <span data-i18n="clear">Limpiar formulario</span>
                     </button>
 
                 </form>
 
             </div>
 
-            <!-- RESULTS COLUMN -->
+            <!-- RESULTS -->
             <div class="results-column">
 
                 <div>
 
                     <div class="summary-card">
 
-                        <p class="label">
+                        <p class="label" data-i18n="monthlyInstallment">
                             CUOTA MENSUAL ESTIMADA
                         </p>
 
                         <h2 id="monthlyPayment">$0</h2>
 
-                        <p class="description" id="paymentDescription">
+                        <p class="description" id="paymentDescription"
+                           data-i18n="completeData">
                             Completa los datos para comenzar.
                         </p>
 
@@ -924,8 +905,13 @@
                             </div>
 
                             <div>
-                                <h3>Resumen financiero</h3>
-                                <p>Resultados de tu simulación.</p>
+                                <h3 data-i18n="financialSummary">
+                                    Resumen financiero
+                                </h3>
+
+                                <p data-i18n="resultsDescription">
+                                    Resultados de tu simulación.
+                                </p>
                             </div>
 
                         </div>
@@ -937,12 +923,12 @@
                                     <i class="fa-solid fa-percent"></i>
                                 </div>
 
-                                <span class="metric-name">
+                                <span class="metric-name" data-i18n="monthlyRate">
                                     Tasa mensual
                                 </span>
                             </div>
 
-                            <span class="metric-value" id="monthlyRate">
+                            <span class="metric-value" id="monthlyRateValue">
                                 0%
                             </span>
 
@@ -955,7 +941,7 @@
                                     <i class="fa-solid fa-money-bill-transfer"></i>
                                 </div>
 
-                                <span class="metric-name">
+                                <span class="metric-name" data-i18n="totalInterest">
                                     Total de intereses
                                 </span>
                             </div>
@@ -973,7 +959,7 @@
                                     <i class="fa-solid fa-coins"></i>
                                 </div>
 
-                                <span class="metric-name">
+                                <span class="metric-name" data-i18n="totalToPay">
                                     Total a pagar
                                 </span>
                             </div>
@@ -991,7 +977,7 @@
                                     <i class="fa-solid fa-calendar-check"></i>
                                 </div>
 
-                                <span class="metric-name">
+                                <span class="metric-name" data-i18n="term">
                                     Plazo
                                 </span>
                             </div>
@@ -1009,12 +995,13 @@
                                     <i class="fa-solid fa-chart-line"></i>
                                 </div>
 
-                                <span class="metric-name">
+                                <span class="metric-name" data-i18n="selectedRate">
                                     Tasa seleccionada
                                 </span>
                             </div>
 
-                            <span class="rate-badge" id="rateTypeLabel">
+                            <span class="rate-badge" id="rateTypeLabel"
+                                  data-i18n="notConfigured">
                                 Sin configurar
                             </span>
 
@@ -1037,17 +1024,20 @@
                     <h3>
                         <i class="fa-solid fa-table-list"
                            style="color: var(--purple); margin-right: 8px;"></i>
-                        Tabla de amortización
+
+                        <span data-i18n="amortizationTable">
+                            Tabla de amortización
+                        </span>
                     </h3>
 
-                    <p>
+                    <p data-i18n="tableDescription">
                         Consulta el detalle de cada cuota de tu préstamo.
                     </p>
                 </div>
 
                 <button class="export-btn" id="exportBtn" disabled>
                     <i class="fa-solid fa-file-csv"></i>
-                    Exportar CSV
+                    <span data-i18n="exportCSV">Exportar CSV</span>
                 </button>
 
             </div>
@@ -1058,11 +1048,11 @@
 
                     <thead>
                         <tr>
-                            <th>Periodo</th>
-                            <th>Cuota mensual</th>
-                            <th>Interés</th>
-                            <th>Abono a capital</th>
-                            <th>Saldo pendiente</th>
+                            <th data-i18n="period">Periodo</th>
+                            <th data-i18n="installment">Cuota mensual</th>
+                            <th data-i18n="interest">Interés</th>
+                            <th data-i18n="capitalPayment">Abono a capital</th>
+                            <th data-i18n="remainingBalance">Saldo pendiente</th>
                         </tr>
                     </thead>
 
@@ -1073,7 +1063,7 @@
                                 <div class="empty-state">
                                     <i class="fa-solid fa-file-invoice"></i>
 
-                                    <p>
+                                    <p data-i18n="emptyTable">
                                         Aún no hay resultados.<br>
                                         Completa el formulario y calcula tu préstamo.
                                     </p>
@@ -1090,7 +1080,7 @@
         </section>
 
         <footer class="footer">
-            FinancePro © 2026 | Simulador financiero de préstamos
+            FinancePro © 2026 | <span data-i18n="footerText">Simulador financiero de préstamos</span>
         </footer>
 
     </main>
@@ -1098,6 +1088,268 @@
 </div>
 
 <script>
+
+    // ==========================================
+    // 1. DICCIONARIO DE TRADUCCIONES
+    // ==========================================
+
+    const translations = {
+
+        es: {
+
+            mainMenu: "MENÚ PRINCIPAL",
+            simulator: "Simulador de préstamos",
+            financialSummary: "Resumen financiero",
+            amortization: "Amortización",
+            help: "Ayuda",
+
+            planFuture: "Planifica tu futuro",
+            sidebarDescription: "Simula tus préstamos y toma decisiones financieras con mayor claridad.",
+
+            welcome: "¡Bienvenido!",
+            welcomeDescription: "Administra y simula tus préstamos fácilmente.",
+            user: "Usuario",
+            financialPanel: "Panel financiero",
+
+            pageTitle: "Simulador de préstamos",
+            pageDescription: "Calcula tus cuotas, intereses y conoce el valor total de tu financiación.",
+
+            configureLoan: "Configura tu préstamo",
+            configureDescription: "Ingresa los datos para realizar la simulación.",
+
+            loanAmount: "Monto total del préstamo",
+            amountPlaceholder: "Ej. 50000000",
+            amountHint: "Ingresa el valor que deseas solicitar.",
+
+            interestRate: "Tasa de interés (%)",
+            ratePlaceholder: "Ej. 12",
+            interestType: "Tipo de tasa",
+
+            annualRate: "Efectiva anual (EA)",
+            monthlyRateOption: "Efectiva mensual (EM)",
+
+            loanTerm: "Plazo del préstamo (meses)",
+            termPlaceholder: "Ej. 60",
+            termHint: "Indica el número de cuotas mensuales.",
+
+            calculate: "Calcular préstamo",
+            clear: "Limpiar formulario",
+
+            monthlyInstallment: "CUOTA MENSUAL ESTIMADA",
+            completeData: "Completa los datos para comenzar.",
+            paymentDescription: "Cuota fija durante {months} meses.",
+
+            resultsDescription: "Resultados de tu simulación.",
+            monthlyRate: "Tasa mensual",
+            totalInterest: "Total de intereses",
+            totalToPay: "Total a pagar",
+            term: "Plazo",
+            selectedRate: "Tasa seleccionada",
+            notConfigured: "Sin configurar",
+
+            amortizationTable: "Tabla de amortización",
+            tableDescription: "Consulta el detalle de cada cuota de tu préstamo.",
+
+            exportCSV: "Exportar CSV",
+            period: "Periodo",
+            installment: "Cuota mensual",
+            interest: "Interés",
+            capitalPayment: "Abono a capital",
+            remainingBalance: "Saldo pendiente",
+
+            emptyTable: "Aún no hay resultados. Completa el formulario y calcula tu préstamo.",
+
+            footerText: "Simulador financiero de préstamos",
+
+            errorInvalid: "Verifica los datos ingresados. El monto debe ser mayor que cero, la tasa no puede ser negativa y el plazo debe estar entre 1 y 600 meses.",
+            errorCalculation: "No fue posible calcular el préstamo.",
+
+            month: "mes",
+            months: "meses",
+
+            csvPeriod: "Periodo",
+            csvInstallment: "Cuota mensual",
+            csvInterest: "Interes",
+            csvCapital: "Abono a capital",
+            csvBalance: "Saldo pendiente",
+
+            csvFilename: "tabla_amortizacion.csv"
+
+        },
+
+        en: {
+
+            mainMenu: "MAIN MENU",
+            simulator: "Loan Simulator",
+            financialSummary: "Financial Summary",
+            amortization: "Amortization",
+            help: "Help",
+
+            planFuture: "Plan your future",
+            sidebarDescription: "Simulate your loans and make clearer financial decisions.",
+
+            welcome: "Welcome!",
+            welcomeDescription: "Manage and simulate your loans easily.",
+            user: "User",
+            financialPanel: "Financial Dashboard",
+
+            pageTitle: "Loan Simulator",
+            pageDescription: "Calculate your installments, interest and total financing cost.",
+
+            configureLoan: "Configure your loan",
+            configureDescription: "Enter your information to simulate your loan.",
+
+            loanAmount: "Total loan amount",
+            amountPlaceholder: "E.g. 50000000",
+            amountHint: "Enter the amount you wish to borrow.",
+
+            interestRate: "Interest rate (%)",
+            ratePlaceholder: "E.g. 12",
+            interestType: "Interest rate type",
+
+            annualRate: "Effective Annual Rate (EAR)",
+            monthlyRateOption: "Effective Monthly Rate (EMR)",
+
+            loanTerm: "Loan term (months)",
+            termPlaceholder: "E.g. 60",
+            termHint: "Enter the number of monthly installments.",
+
+            calculate: "Calculate loan",
+            clear: "Clear form",
+
+            monthlyInstallment: "ESTIMATED MONTHLY PAYMENT",
+            completeData: "Complete the information to get started.",
+            paymentDescription: "Fixed installment for {months} months.",
+
+            resultsDescription: "Your simulation results.",
+            monthlyRate: "Monthly interest rate",
+            totalInterest: "Total interest",
+            totalToPay: "Total amount payable",
+            term: "Loan term",
+            selectedRate: "Selected rate",
+            notConfigured: "Not configured",
+
+            amortizationTable: "Amortization schedule",
+            tableDescription: "View the details of each loan installment.",
+
+            exportCSV: "Export CSV",
+            period: "Period",
+            installment: "Monthly installment",
+            interest: "Interest",
+            capitalPayment: "Principal payment",
+            remainingBalance: "Remaining balance",
+
+            emptyTable: "No results yet. Complete the form and calculate your loan.",
+
+            footerText: "Loan Financial Simulator",
+
+            errorInvalid: "Please check your entries. The loan amount must be greater than zero, the interest rate cannot be negative, and the term must be between 1 and 600 months.",
+            errorCalculation: "Unable to calculate the loan.",
+
+            month: "month",
+            months: "months",
+
+            csvPeriod: "Period",
+            csvInstallment: "Monthly installment",
+            csvInterest: "Interest",
+            csvCapital: "Principal payment",
+            csvBalance: "Remaining balance",
+
+            csvFilename: "amortization_schedule.csv"
+
+        }
+
+    };
+
+
+    // ==========================================
+    // 2. CONFIGURACIÓN DEL IDIOMA
+    // ==========================================
+
+    let currentLanguage = "es";
+
+    const languageSelector =
+        document.getElementById("languageSelector");
+
+    function translatePage(language) {
+
+        currentLanguage = language;
+
+        const dictionary = translations[language];
+
+        // Actualizar atributo lang del documento
+        document.documentElement.lang = language;
+
+        // Traducir todos los elementos con data-i18n
+        document.querySelectorAll("[data-i18n]").forEach(element => {
+
+            const key = element.getAttribute("data-i18n");
+
+            if (dictionary[key] !== undefined) {
+
+                element.textContent = dictionary[key];
+
+            }
+
+        });
+
+        // Traducir placeholders
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+
+            const key = element.getAttribute("data-i18n-placeholder");
+
+            if (dictionary[key] !== undefined) {
+
+                element.placeholder = dictionary[key];
+
+            }
+
+        });
+
+        // Actualizar descripción de cuota
+        updatePaymentDescription();
+
+        // Actualizar duración del préstamo
+        updateLoanDuration();
+
+        // Actualizar tasa seleccionada
+        updateRateLabel();
+
+        // Actualizar tabla vacía si no hay resultados
+        if (currentAmortization.length === 0) {
+
+            renderEmptyTable();
+
+        } else {
+
+            renderAmortizationTable();
+
+        }
+
+        // Actualizar errores si existen
+        if (errorMessage.style.display === "block") {
+
+            errorMessage.textContent = dictionary.errorInvalid;
+
+        }
+
+    }
+
+
+    // ==========================================
+    // 3. CAMBIO DINÁMICO DE IDIOMA
+    // ==========================================
+
+    languageSelector.addEventListener("change", function() {
+
+        translatePage(this.value);
+
+    });
+
+
+    // ==========================================
+    // 4. VARIABLES DEL SIMULADOR
+    // ==========================================
 
     const loanForm = document.getElementById("loanForm");
 
@@ -1110,47 +1362,144 @@
 
     let currentAmortization = [];
 
-    let currentCurrency = "COP";
+    let lastLoanTerm = 0;
 
-    // Formato de moneda
+    let lastInterestType = "";
+
+    let lastMonthlyRate = 0;
+
+
+    // ==========================================
+    // 5. FORMATO DE MONEDA
+    // ==========================================
+
     function formatCurrency(value) {
 
-        return new Intl.NumberFormat("es-CO", {
+        const locale = currentLanguage === "es"
+            ? "es-CO"
+            : "en-US";
+
+        return new Intl.NumberFormat(locale, {
+
             style: "currency",
-            currency: currentCurrency,
+            currency: "COP",
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
+
         }).format(value);
 
     }
 
-    // Formato de porcentaje
+
+    // ==========================================
+    // 6. FORMATO DE PORCENTAJE
+    // ==========================================
+
     function formatPercentage(value) {
 
-        return new Intl.NumberFormat("es-CO", {
+        const locale = currentLanguage === "es"
+            ? "es-CO"
+            : "en-US";
+
+        return new Intl.NumberFormat(locale, {
+
             minimumFractionDigits: 4,
             maximumFractionDigits: 4
+
         }).format(value) + " %";
 
     }
 
-    // Mostrar errores
+
+    // ==========================================
+    // 7. ACTUALIZAR DESCRIPCIÓN DE CUOTA
+    // ==========================================
+
+    function updatePaymentDescription() {
+
+        const dictionary = translations[currentLanguage];
+
+        const description = lastLoanTerm > 0
+            ? dictionary.paymentDescription.replace(
+                "{months}",
+                lastLoanTerm
+            )
+            : dictionary.completeData;
+
+        document.getElementById("paymentDescription").textContent =
+            description;
+
+    }
+
+
+    // ==========================================
+    // 8. ACTUALIZAR DURACIÓN
+    // ==========================================
+
+    function updateLoanDuration() {
+
+        const dictionary = translations[currentLanguage];
+
+        const duration = lastLoanTerm === 1
+            ? dictionary.month
+            : dictionary.months;
+
+        document.getElementById("loanDuration").textContent =
+            lastLoanTerm + " " + duration;
+
+    }
+
+
+    // ==========================================
+    // 9. ACTUALIZAR TIPO DE TASA
+    // ==========================================
+
+    function updateRateLabel() {
+
+        const dictionary = translations[currentLanguage];
+
+        let label = dictionary.notConfigured;
+
+        if (lastInterestType === "effectiveAnnual") {
+
+            label = dictionary.annualRate;
+
+        } else if (lastInterestType === "monthly") {
+
+            label = dictionary.monthlyRateOption;
+
+        }
+
+        document.getElementById("rateTypeLabel").textContent = label;
+
+    }
+
+
+    // ==========================================
+    // 10. MOSTRAR ERRORES
+    // ==========================================
+
     function showError(message) {
 
         errorMessage.textContent = message;
+
         errorMessage.style.display = "block";
 
     }
 
-    // Ocultar errores
     function hideError() {
 
         errorMessage.textContent = "";
+
         errorMessage.style.display = "none";
 
     }
 
-    // Calcular préstamo
+
+    // ==========================================
+    // 11. CALCULAR PRÉSTAMO
+    // ==========================================
+
     loanForm.addEventListener("submit", function(event) {
 
         event.preventDefault();
@@ -1172,6 +1521,8 @@
             document.getElementById("loanTerm").value
         );
 
+        const dictionary = translations[currentLanguage];
+
         // Validaciones
         if (
             !Number.isFinite(principal) ||
@@ -1183,15 +1534,13 @@
             loanTerm > 600
         ) {
 
-            showError(
-                "Verifica los datos ingresados. El monto debe ser mayor que cero, la tasa no puede ser negativa y el plazo debe estar entre 1 y 600 meses."
-            );
+            showError(dictionary.errorInvalid);
 
             return;
 
         }
 
-        // Conversión de tasa a efectiva mensual
+        // Conversión a tasa efectiva mensual
         let monthlyInterestRate;
 
         if (interestType === "effectiveAnnual") {
@@ -1207,7 +1556,7 @@
 
         }
 
-        // Cálculo de cuota
+        // Calcular cuota mensual
         let monthlyPayment;
 
         if (monthlyInterestRate === 0) {
@@ -1229,16 +1578,22 @@
 
         }
 
-        // Verificar resultado
         if (!Number.isFinite(monthlyPayment)) {
 
-            showError("No fue posible calcular el préstamo.");
+            showError(dictionary.errorCalculation);
 
             return;
 
         }
 
-        // Cálculo de amortización
+        // Guardar configuración para traducciones posteriores
+        lastLoanTerm = loanTerm;
+
+        lastInterestType = interestType;
+
+        lastMonthlyRate = monthlyInterestRate;
+
+        // Generar amortización
         let remainingBalance = principal;
 
         let totalInterest = 0;
@@ -1289,14 +1644,11 @@
 
         }
 
-        // Actualizar resultados
+        // Mostrar resultados
         document.getElementById("monthlyPayment").textContent =
             formatCurrency(monthlyPayment);
 
-        document.getElementById("paymentDescription").textContent =
-            "Cuota fija durante " + loanTerm + " meses.";
-
-        document.getElementById("monthlyRate").textContent =
+        document.getElementById("monthlyRateValue").textContent =
             formatPercentage(monthlyInterestRate * 100);
 
         document.getElementById("totalInterest").textContent =
@@ -1305,25 +1657,24 @@
         document.getElementById("totalPayment").textContent =
             formatCurrency(totalPayment);
 
-        document.getElementById("loanDuration").textContent =
-            loanTerm + (loanTerm === 1 ? " mes" : " meses");
+        updatePaymentDescription();
 
-        document.getElementById("rateTypeLabel").textContent =
-            interestType === "effectiveAnnual"
-                ? "Efectiva anual (EA)"
-                : "Efectiva mensual (EM)";
+        updateLoanDuration();
 
-        // Generar tabla
+        updateRateLabel();
+
+        // Renderizar tabla
         renderAmortizationTable();
 
-        // Habilitar exportación
         exportBtn.disabled = false;
-
-        exportBtn.style.opacity = "1";
 
     });
 
-    // Renderizar tabla
+
+    // ==========================================
+    // 12. GENERAR TABLA DE AMORTIZACIÓN
+    // ==========================================
+
     function renderAmortizationTable() {
 
         amortizationBody.innerHTML = "";
@@ -1355,6 +1706,7 @@
                 if (index === 0) {
 
                     cell.style.fontWeight = "700";
+
                     cell.style.color = "var(--purple)";
 
                 }
@@ -1369,7 +1721,52 @@
 
     }
 
-    // Exportar amortización a CSV
+
+    // ==========================================
+    // 13. TABLA VACÍA
+    // ==========================================
+
+    function renderEmptyTable() {
+
+        const dictionary = translations[currentLanguage];
+
+        amortizationBody.innerHTML = "";
+
+        const row = document.createElement("tr");
+
+        const cell = document.createElement("td");
+
+        cell.colSpan = 5;
+
+        const container = document.createElement("div");
+
+        container.className = "empty-state";
+
+        const icon = document.createElement("i");
+
+        icon.className = "fa-solid fa-file-invoice";
+
+        const paragraph = document.createElement("p");
+
+        paragraph.textContent = dictionary.emptyTable;
+
+        container.appendChild(icon);
+
+        container.appendChild(paragraph);
+
+        cell.appendChild(container);
+
+        row.appendChild(cell);
+
+        amortizationBody.appendChild(row);
+
+    }
+
+
+    // ==========================================
+    // 14. EXPORTAR CSV BILINGÜE
+    // ==========================================
+
     exportBtn.addEventListener("click", function() {
 
         if (currentAmortization.length === 0) {
@@ -1378,14 +1775,22 @@
 
         }
 
+        const dictionary = translations[currentLanguage];
+
         const rows = [
 
             [
-                "Periodo",
-                "Cuota mensual",
-                "Interes",
-                "Abono a capital",
-                "Saldo pendiente"
+
+                dictionary.csvPeriod,
+
+                dictionary.csvInstallment,
+
+                dictionary.csvInterest,
+
+                dictionary.csvCapital,
+
+                dictionary.csvBalance
+
             ],
 
             ...currentAmortization.map(item => [
@@ -1424,7 +1829,7 @@
 
         link.href = url;
 
-        link.download = "tabla_amortizacion.csv";
+        link.download = dictionary.csvFilename;
 
         document.body.appendChild(link);
 
@@ -1436,48 +1841,62 @@
 
     });
 
-    // Limpiar formulario y resultados
+
+    // ==========================================
+    // 15. REINICIAR SIMULADOR
+    // ==========================================
+
     loanForm.addEventListener("reset", function() {
 
         hideError();
 
-        document.getElementById("monthlyPayment").textContent = "$0";
-
-        document.getElementById("paymentDescription").textContent =
-            "Completa los datos para comenzar.";
-
-        document.getElementById("monthlyRate").textContent = "0%";
-
-        document.getElementById("totalInterest").textContent = "$0";
-
-        document.getElementById("totalPayment").textContent = "$0";
-
-        document.getElementById("loanDuration").textContent = "0 meses";
-
-        document.getElementById("rateTypeLabel").textContent =
-            "Sin configurar";
-
-        amortizationBody.innerHTML = `
-            <tr>
-                <td colspan="5">
-                    <div class="empty-state">
-                        <i class="fa-solid fa-file-invoice"></i>
-                        <p>
-                            Aún no hay resultados.<br>
-                            Completa el formulario y calcula tu préstamo.
-                        </p>
-                    </div>
-                </td>
-            </tr>
-        `;
-
         currentAmortization = [];
+
+        lastLoanTerm = 0;
+
+        lastInterestType = "";
+
+        lastMonthlyRate = 0;
+
+        document.getElementById("monthlyPayment").textContent =
+            formatCurrency(0);
+
+        document.getElementById("monthlyRateValue").textContent =
+            "0%";
+
+        document.getElementById("totalInterest").textContent =
+            formatCurrency(0);
+
+        document.getElementById("totalPayment").textContent =
+            formatCurrency(0);
+
+        updatePaymentDescription();
+
+        updateLoanDuration();
+
+        updateRateLabel();
+
+        renderEmptyTable();
 
         exportBtn.disabled = true;
 
-        exportBtn.style.opacity = ".5";
-
     });
+
+
+    // ==========================================
+    // 16. INICIALIZACIÓN
+    // ==========================================
+
+    // Detectar idioma del navegador si es inglés.
+    const browserLanguage =
+        navigator.language.toLowerCase().startsWith("en")
+            ? "en"
+            : "es";
+
+    // Español como idioma inicial por defecto.
+    languageSelector.value = "es";
+
+    translatePage("es");
 
 </script>
 
